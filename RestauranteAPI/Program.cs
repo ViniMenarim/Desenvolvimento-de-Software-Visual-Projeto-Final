@@ -80,5 +80,69 @@ app.MapPatch("/api/cliente/alterar/{id}", ([FromRoute] int id, [FromBody] Client
     return Results.Ok("Cliente alterado com sucesso!");
 });
 
+// ==========================================
+// CRUD DE MESA
+// ==========================================
+
+app.MapGet("/api/mesa/listar", ([FromServices] AppDbContext ctx) =>
+{
+    if (ctx.Mesas.Any())
+    {
+        return Results.Ok(ctx.Mesas.ToList());
+    }
+    return Results.BadRequest("A lista de mesas está vazia!");
+});
+
+
+//Buscar mesa pelo ID 
+app.MapGet("/api/mesa/buscar/{id}", ([FromRoute] int id, [FromServices] AppDbContext ctx) =>
+{
+    var mesaBuscada = ctx.Mesas.Find(id);
+    if (mesaBuscada == null)
+        return Results.NotFound("Mesa não encontrada.");
+
+    return Results.Ok(mesaBuscada);
+});
+
+//Cadastrar mesa
+app.MapPost("/api/mesa/cadastrar", ([FromBody] Mesa mesa, [FromServices] AppDbContext ctx) =>
+{
+    var existente = ctx.Mesas.FirstOrDefault(m => m.Numero == mesa.Numero);
+    if (existente != null)
+        return Results.Conflict("Já existe uma mesa com esse número.");
+
+    ctx.Mesas.Add(mesa);
+    ctx.SaveChanges();
+    return Results.Created("", mesa);
+});
+
+//Alterar mesa
+app.MapPatch("/api/mesa/alterar/{id}", ([FromRoute] int id, [FromBody] Mesa mesaAlterada, [FromServices] AppDbContext ctx) =>
+{
+    var mesa = ctx.Mesas.Find(id);
+    if (mesa == null)
+        return Results.NotFound("Mesa não encontrada.");
+
+    mesa.Numero = mesaAlterada.Numero;
+    mesa.Capacidade = mesaAlterada.Capacidade;
+    mesa.Disponivel = mesaAlterada.Disponivel;
+
+    ctx.Mesas.Update(mesa);
+    ctx.SaveChanges();
+    return Results.Ok("Mesa alterada com sucesso!");
+});
+
+//Remover mesa
+app.MapDelete("/api/mesa/remover/{id}", ([FromRoute] int id, [FromServices] AppDbContext ctx) =>
+{
+    Mesa? mesa = ctx.Mesas.Find(id);
+    if (mesa == null)
+        return Results.NotFound("Mesa não encontrada.");
+
+    ctx.Mesas.Remove(mesa);
+    ctx.SaveChanges();
+    return Results.Ok("Mesa removida com sucesso!");
+});
+
 
 app.Run();
