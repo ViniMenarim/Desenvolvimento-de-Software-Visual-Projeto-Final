@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace RestauranteAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251016233132_InitialCreate")]
+    [Migration("20251017230311_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

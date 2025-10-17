@@ -9,7 +9,6 @@ namespace ProjetoRestaurante.Models
         public int Capacidade { get; set; }
         public bool Disponivel { get; set; } = true;
 
-        // Relacionamento
         public List<Reserva>? Reservas { get; set; }
     }
 }

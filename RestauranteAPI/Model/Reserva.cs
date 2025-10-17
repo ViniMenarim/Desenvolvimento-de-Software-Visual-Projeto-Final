@@ -7,7 +7,6 @@ namespace ProjetoRestaurante.Models
         public int Id { get; set; }
         public DateTime DataHora { get; set; }
 
-        // Chaves estrangeiras
         public int ClienteId { get; set; }
         public Cliente? Cliente { get; set; }
 

@@ -1,0 +1,234 @@
+# Define a variável de host. 
+# Altere a porta se a sua API estiver rodando em uma diferente.
+@host = http://localhost:5219
+
+# ==========================================
+# TESTE GERAL
+# ==========================================
+
+### Teste: Verificar se a API está no ar
+GET {{host}}/
+
+###
+# ==========================================
+# CRUD DE CLIENTE
+# ==========================================
+
+### Teste: Cadastrar um novo cliente (Ana Silva)
+POST {{host}}/api/cliente/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Ana Silva",
+    "telefone": "11988887777",
+    "email": "ana.silva@email.com"
+}
+
+### Teste: Cadastrar um segundo cliente (Bruno Costa)
+POST {{host}}/api/cliente/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Bruno Costa",
+    "telefone": "21955554444",
+    "email": "bruno.costa@email.com"
+}
+
+### Teste: Tentar cadastrar cliente com email duplicado (DEVE FALHAR 409)
+POST {{host}}/api/cliente/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Ana Silva Duplicada",
+    "telefone": "999999999",
+    "email": "ana.silva@email.com"
+}
+
+### Teste: Listar todos os clientes
+GET {{host}}/api/cliente/listar
+
+### Teste: Buscar cliente pelo ID (ID = 1)
+GET {{host}}/api/cliente/buscar/1
+
+### Teste: Buscar cliente que não existe (DEVE FALHAR 404)
+GET {{host}}/api/cliente/buscar/999
+
+### Teste: Alterar dados do cliente (ID = 1)
+PATCH {{host}}/api/cliente/alterar/1
+Content-Type: application/json
+
+{
+    "nome": "Ana Silva Santos",
+    "telefone": "11999999999",
+    "email": "ana.santos@email.com"
+}
+
+### Teste: Remover cliente (ID = 2)
+DELETE {{host}}/api/cliente/remover/2
+
+###
+# ==========================================
+# CRUD DE MESA
+# ==========================================
+
+### Teste: Cadastrar uma nova mesa (Mesa 1)
+POST {{host}}/api/mesa/cadastrar
+Content-Type: application/json
+
+{
+    "numero": 1,
+    "capacidade": 4,
+    "disponivel": true
+}
+
+### Teste: Cadastrar uma segunda mesa (Mesa 2)
+POST {{host}}/api/mesa/cadastrar
+Content-Type: application/json
+
+{
+    "numero": 2,
+    "capacidade": 2,
+    "disponivel": true
+}
+
+### Teste: Tentar cadastrar mesa com número duplicado (DEVE FALHAR 409)
+POST {{host}}/api/mesa/cadastrar
+Content-Type: application/json
+
+{
+    "numero": 1,
+    "capacidade": 6
+}
+
+### Teste: Listar todas as mesas
+GET {{host}}/api/mesa/listar
+
+### Teste: Buscar mesa pelo ID (ID = 1)
+GET {{host}}/api/mesa/buscar/1
+
+### Teste: Alterar dados da mesa (ID = 2)
+PATCH {{host}}/api/mesa/alterar/2
+Content-Type: application/json
+
+{
+    "numero": 2,
+    "capacidade": 3,
+    "disponivel": false
+}
+
+###
+# ==========================================
+# CRUD DE RESERVA (COM VALIDAÇÃO)
+# ==========================================
+
+### Teste: Cadastrar reserva (Cliente 1, Mesa 1) - (SUCESSO)
+# (Assume que Cliente 1 e Mesa 1 existem após os testes acima)
+POST {{host}}/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-20T19:00:00",
+    "clienteId": 1,
+    "mesaId": 1
+}
+
+### Teste: Cadastrar reserva (Cliente 1, Mesa 2) - (SUCESSO)
+# (Reserva no mesmo horário, mas em mesa diferente)
+POST {{host}}/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-20T19:00:00",
+    "clienteId": 1,
+    "mesaId": 2
+}
+
+### Teste: [VALIDAÇÃO] Tentar reservar MESA 1 no mesmo horário (DEVE FALHAR 409)
+POST {{host}}/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-20T19:00:00",
+    "clienteId": 1, 
+    "mesaId": 1
+}
+
+### Teste: Cadastrar reserva na MESA 1 em outro horário (SUCESSO)
+POST {{host}}/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-20T21:00:00",
+    "clienteId": 1,
+    "mesaId": 1
+}
+
+### Teste: [VALIDAÇÃO] Tentar reservar com ClienteID inexistente (DEVE FALHAR 404)
+POST {{host}}/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-21T19:00:00",
+    "clienteId": 999,
+    "mesaId": 1
+}
+
+### Teste: [VALIDAÇÃO] Tentar reservar com MesaID inexistente (DEVE FALHAR 404)
+POST {{host}}/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-21T19:00:00",
+    "clienteId": 1,
+    "mesaId": 999
+}
+
+### Teste: Listar todas as reservas (DEVE MOSTRAR CLIENTE E MESA)
+GET {{host}}/api/reserva/listar
+
+### Teste: Buscar reserva pelo ID (ID = 1)
+GET {{host}}/api/reserva/buscar/1
+
+### Teste: Alterar reserva (ID = 1) para um novo horário livre
+# Alterando de 19:00 para 19:30
+PATCH {{host}}/api/reserva/alterar/1
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-20T19:30:00",
+    "clienteId": 1,
+    "mesaId": 1
+}
+
+### Teste: [VALIDAÇÃO] Tentar alterar reserva (ID = 1) para horário de outra reserva (ID = 3)
+# (A reserva ID=3 está às 21:00 na Mesa 1)
+PATCH {{host}}/api/reserva/alterar/1
+Content-Type: application/json
+
+{
+    "dataHora": "2025-10-20T21:00:00",
+    "clienteId": 1,
+    "mesaId": 1
+}
+
+### Teste: Remover reserva (ID = 2)
+DELETE {{host}}/api/reserva/remover/2
+
+###
+# ==========================================
+# TESTES DE LIMPEZA (EXECUTAR NO FINAL)
+# ==========================================
+
+### Teste: Limpar Reservas restantes (IDs 1 e 3)
+DELETE {{host}}/api/reserva/remover/1
+###
+DELETE {{host}}/api/reserva/remover/3
+
+### Teste: Limpar Mesas restantes (IDs 1 e 2)
+DELETE {{host}}/api/mesa/remover/1
+###
+DELETE {{host}}/api/mesa/remover/2
+
+### Teste: Limpar Cliente restante (ID 1)
+# (Cliente 2 já foi removido no teste de Cliente)
+DELETE {{host}}/api/cliente/remover/1
