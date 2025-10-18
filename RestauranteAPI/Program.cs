@@ -13,6 +13,8 @@ var app = builder.Build();
 
 app.MapGet("/", () => "RESTAURANTE!");
 
+//CRUD DE CLIENTE
+
 app.MapGet("/api/cliente/listar", ([FromServicesAttribute] AppDbContext ctx) =>
 {
     if (ctx.Clientes.Any())
@@ -74,6 +76,8 @@ app.MapPatch("/api/cliente/alterar/{id}", ([FromRoute] int id, [FromBody] Client
     return Results.Ok("Cliente alterado com sucesso!");
 });
 
+//CRUD DE MESA
+
 app.MapGet("/api/mesa/listar", ([FromServices] AppDbContext ctx) =>
 {
     if (ctx.Mesas.Any())
@@ -128,6 +132,8 @@ app.MapDelete("/api/mesa/remover/{id}", ([FromRoute] int id, [FromServices] AppD
     ctx.SaveChanges();
     return Results.Ok("Mesa removida com sucesso!");
 });
+
+//CRUD DE RESERVA
 
 app.MapGet("/api/reserva/listar", ([FromServices] AppDbContext ctx) =>
 {
