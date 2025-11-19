@@ -9,7 +9,21 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.MapGet("/", () => "RESTAURANTE!");
 
@@ -201,7 +215,7 @@ app.MapPatch("/api/reserva/alterar/{id}", ([FromRoute] int id, [FromBody] Reserv
     }
 
     bool mesaOcupada = ctx.Reservas.Any(r =>
-        r.Id != id && 
+        r.Id != id &&
         r.MesaId == reservaAlterada.MesaId &&
         r.DataHora == reservaAlterada.DataHora
     );
