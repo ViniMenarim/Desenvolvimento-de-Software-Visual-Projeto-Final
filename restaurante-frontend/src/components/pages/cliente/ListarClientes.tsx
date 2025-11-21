@@ -29,7 +29,7 @@ function ListarClientes(){
     }
 
     return(
-        <div id = "listar_produtos">
+        <div id = "listar_clientes">
             <h1>Lista de Clientes</h1>
             <table>
                 <thead>
