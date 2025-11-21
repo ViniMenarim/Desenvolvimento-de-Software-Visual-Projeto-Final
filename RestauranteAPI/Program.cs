@@ -11,15 +11,12 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 });
 
 builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
-});
+  options.AddPolicy("Acesso Total",
+    configs => configs
+      .AllowAnyOrigin()
+      .AllowAnyHeader()
+      .AllowAnyMethod())
+);
 
 var app = builder.Build();
 
@@ -244,5 +241,7 @@ app.MapDelete("/api/reserva/remover/{id}", ([FromRoute] int id, [FromServices] A
     ctx.SaveChanges();
     return Results.Ok("Reserva removida com sucesso!");
 });
+
+app.UseCors("Acesso Total");
 
 app.Run();
