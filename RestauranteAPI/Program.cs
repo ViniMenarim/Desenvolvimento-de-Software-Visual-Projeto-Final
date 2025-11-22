@@ -177,6 +177,11 @@ app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva, [FromServices
     if (mesa == null)
         return Results.NotFound("Mesa não encontrada.");
 
+    if (mesa.Disponivel == false)
+    {
+        return Results.Conflict("Esta mesa está bloqueada/indisponível e não pode ser reservada.");
+    }
+
     bool mesaOcupada = ctx.Reservas.Any(r =>
         r.MesaId == reserva.MesaId &&
         r.DataHora == reserva.DataHora

@@ -1,20 +1,102 @@
-# Desenvolvimento-de-Software-Visual-Projeto-Final
-Projeto final para a disciplina de Desenvolvimento de Software Visual
+# Sistema de Gerenciamento de Restaurante 🍽️
 
-Grupo: Vinicius Menarim e Enzo Xavier
+Projeto final para a disciplina de **Desenvolvimento de Software Visual**.
+Uma solução Full Stack para administração de reservas, clientes e mesas de um restaurante.
 
-Sistema de Gerenciamento de Restaurante
-Este projeto é uma API de gerenciamento de restaurante desenvolvida em C# com Minimal API, utilizando Entity Framework Core e SQLite. O sistema permite o cadastro e gerenciamento de clientes, mesas e reservas, oferecendo funcionalidades de CRUD completo, com validações importantes para evitar inconsistências, como duplicidade de e-mail ou reservas de mesas já ocupadas.
+**Grupo:**
+* Vinicius Menarim
+* Enzo Xavier
 
-Funcionalidades
-Clientes: cadastrar, listar, buscar por ID, atualizar e remover.
-Mesas: cadastrar, listar, buscar por ID, atualizar (incluindo disponibilidade) e remover.
-Reservas: criar, listar, buscar, atualizar e remover, com validação de conflitos de horário.
+---
 
-Relacionamento das Entidades
-Cliente ↔ Reserva: um cliente pode ter várias reservas; cada reserva pertence a um cliente.
-Mesa ↔ Reserva: uma mesa pode ter várias reservas em horários diferentes; cada reserva pertence a uma mesa.
-Reserva: conecta cliente e mesa e registra o horário da reserva, garantindo que uma mesa não seja reservada por dois clientes no mesmo horário.
+## 📋 Sobre o Projeto
 
-Uso de Inteligência Artificial
-A Inteligência Artificial foi utilizada para apoiar o desenvolvimento do projeto, ajudando a planejar a ideia do sistema, sugerir algumas funcionalidades e implementar validações e estruturas, além de colaborar na elaboração da documentação.
+Este sistema foi desenvolvido para gerenciar o fluxo de reservas de um restaurante. Ele é composto por uma **API REST** robusta no backend e uma interface web moderna (**Frontend**) para interação do usuário.
+
+O principal diferencial é a validação de conflitos: o sistema impede que uma mesma mesa seja reservada duplicadamente no mesmo horário, além de evitar cadastros duplicados de clientes.
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+### Backend (API)
+* **C# .NET**: Utilizando o modelo de **Minimal API** para alta performance e simplicidade.
+* **Entity Framework Core**: ORM para manipulação de dados.
+* **SQLite**: Banco de dados relacional leve e portátil.
+* **Swagger**: Documentação e teste das rotas da API.
+
+### Frontend (Web)
+* **React + TypeScript**: Biblioteca para construção da interface de usuário.
+* **Axios**: Para requisições HTTP e comunicação com a API.
+* **SweetAlert2**: Para alertas modais personalizados, bonitos e responsivos.
+* **CSS Moderno**: Estilização limpa e responsiva.
+* **React Router DOM**: Gerenciamento de rotas e navegação (SPA).
+
+---
+
+## ⚙️ Funcionalidades
+
+### 👤 Clientes
+* Cadastro de novos clientes (com validação de e-mail único).
+* Listagem completa de clientes.
+* Edição de dados cadastrais.
+* Remoção de clientes (com confirmação de segurança).
+
+### 🪑 Mesas
+* Cadastro de mesas (número, capacidade, status).
+* Controle de disponibilidade (Mesa Livre/Ocupada).
+* Visualização visual no frontend se a mesa está indisponível para reserva.
+* Edição e remoção de mesas.
+
+### 📅 Reservas
+* **Criação de Reservas**: Seleção de cliente e mesa via listas dinâmicas.
+* **Validação Inteligente**: O sistema **bloqueia** a reserva se a mesa já estiver ocupada no horário solicitado ou se estiver marcada como indisponível.
+* Listagem de todas as reservas com formatação de data brasileira.
+* Edição de data, mesa ou cliente da reserva.
+* Cancelamento de reservas.
+
+---
+
+## 🔗 Relacionamento das Entidades
+
+1.  **Cliente ↔ Reserva:** Relacionamento *Um-para-Muitos*. Um cliente pode realizar várias reservas, mas cada reserva está atrelada a um único cliente.
+2.  **Mesa ↔ Reserva:** Relacionamento *Um-para-Muitos*. Uma mesa pode receber várias reservas em horários distintos.
+3.  **Reserva:** Entidade associativa que conecta Cliente e Mesa, adicionando a dimensão de tempo (Data/Hora) para garantir a integridade da agenda do restaurante.
+
+---
+
+## 📦 Como Executar o Projeto
+
+### Pré-requisitos
+* .NET SDK instalado.
+* Node.js e NPM instalados.
+
+### Passo 1: Rodar a API (Backend)
+1.  Abra a pasta `RestauranteAPI`.
+2.  No terminal, execute:
+    ```bash
+    dotnet run
+    ```
+3.  A API estará rodando (geralmente em `http://localhost:5219` ou porta similar configurada).
+
+### Passo 2: Rodar o Frontend
+1.  Abra a pasta `RestauranteFrontend`.
+2.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+3.  Inicie o servidor de desenvolvimento:
+    ```bash
+    npm start
+    ```
+4.  O navegador abrirá a aplicação (geralmente em `http://localhost:3000`).
+
+---
+
+## 🤖 Uso de Inteligência Artificial
+
+A Inteligência Artificial foi utilizada como ferramenta de apoio durante todo o ciclo de desenvolvimento deste projeto. Suas contribuições incluíram:
+* Planejamento inicial e estruturação da ideia do sistema.
+* Sugestões de implementação para validações de regras de negócio (ex: conflito de horários).
+* Auxílio na construção da estrutura do Frontend (React components e CSS).
+* Apoio na elaboração desta documentação.
