@@ -65,38 +65,9 @@ O principal diferencial é a validação de conflitos: o sistema impede que uma 
 
 ---
 
-## 📦 Como Executar o Projeto
-
-### Pré-requisitos
-* .NET SDK instalado.
-* Node.js e NPM instalados.
-
-### Passo 1: Rodar a API (Backend)
-1.  Abra a pasta `RestauranteAPI`.
-2.  No terminal, execute:
-    ```bash
-    dotnet run
-    ```
-3.  A API estará rodando (geralmente em `http://localhost:5219` ou porta similar configurada).
-
-### Passo 2: Rodar o Frontend
-1.  Abra a pasta `RestauranteFrontend`.
-2.  Instale as dependências:
-    ```bash
-    npm install
-    ```
-3.  Inicie o servidor de desenvolvimento:
-    ```bash
-    npm start
-    ```
-4.  O navegador abrirá a aplicação (geralmente em `http://localhost:3000`).
-
----
-
 ## 🤖 Uso de Inteligência Artificial
 
 A Inteligência Artificial foi utilizada como ferramenta de apoio durante todo o ciclo de desenvolvimento deste projeto. Suas contribuições incluíram:
 * Planejamento inicial e estruturação da ideia do sistema.
 * Sugestões de implementação para validações de regras de negócio (ex: conflito de horários).
-* Auxílio na construção da estrutura do Frontend (React components e CSS).
 * Apoio na elaboração desta documentação.
