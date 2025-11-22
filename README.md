@@ -13,8 +13,6 @@ Uma solução Full Stack para administração de reservas, clientes e mesas de u
 
 Este sistema foi desenvolvido para gerenciar o fluxo de reservas de um restaurante. Ele é composto por uma **API REST** robusta no backend e uma interface web moderna (**Frontend**) para interação do usuário.
 
-O principal diferencial é a validação de conflitos: o sistema impede que uma mesma mesa seja reservada duplicadamente no mesmo horário, além de evitar cadastros duplicados de clientes.
-
 ---
 
 ## 🚀 Tecnologias Utilizadas
